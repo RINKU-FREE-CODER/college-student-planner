@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A simple college planner for classes, assignments, and exams."
+    />
+    <title>Campus Planner</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="#" aria-label="Campus Planner home">
+          <span class="brand-mark" aria-hidden="true">C</span>
+          <span>campus<span class="brand-light">planner</span></span>
+        </a>
+
+        <p class="nav-label">WORKSPACE</p>
+        <nav class="main-nav" aria-label="Main navigation">
+          <button class="nav-link is-active" type="button" data-view="overview">
+            <span class="nav-icon" aria-hidden="true">⌂</span>
+            Overview
+          </button>
+          <button class="nav-link" type="button" data-view="classes">
+            <span class="nav-icon" aria-hidden="true">▦</span>
+            My classes
+            <span class="nav-count" id="classNavCount">0</span>
+          </button>
+          <button class="nav-link" type="button" data-view="assignments">
+            <span class="nav-icon" aria-hidden="true">☷</span>
+            Assignments
+            <span class="nav-count" id="assignmentNavCount">0</span>
+          </button>
+          <button class="nav-link" type="button" data-view="exams">
+            <span class="nav-icon" aria-hidden="true">✳</span>
+            Exams
+            <span class="nav-count" id="examNavCount">0</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-note">
+          <div class="note-icon" aria-hidden="true">✦</div>
+          <p class="note-title">One step at a time</p>
+          <p class="note-copy">A little planning makes a big semester feel manageable.</p>
+        </div>
+
+        <div class="sidebar-footer">
+          <span class="status-dot" aria-hidden="true"></span>
+          Your planner is saved on this device
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="mobile-brand">
+            <span class="brand-mark" aria-hidden="true">C</span>
+            <span>campus<span class="brand-light">planner</span></span>
+          </div>
+          <div class="breadcrumb"><span>Workspace</span><span class="breadcrumb-separator">/</span><strong id="breadcrumbCurrent">Overview</strong></div>
+          <div class="topbar-date">
+            <span class="date-icon" aria-hidden="true">◷</span>
+            <span id="todayLabel"></span>
+          </div>
+        </header>
+
+        <div class="content-layout">
+          <div class="page-column">
+            <section id="overviewView" class="view">
+              <div class="welcome-row">
+                <div>
+                  <p class="eyebrow">YOUR SEMESTER, IN FOCUS</p>
+                  <h1>Make room for <span>what matters.</span></h1>
+                  <p class="welcome-copy">Keep your classes and deadlines all in one calm place.</p>
+                </div>
+                <div class="welcome-illustration" aria-hidden="true">
+                  <span class="sun"></span>
+                  <span class="book book-back"></span>
+                  <span class="book book-front"></span>
+                  <span class="sparkle sparkle-one">✦</span>
+                  <span class="sparkle sparkle-two">✧</span>
+                </div>
+              </div>
+
+              <div class="stats-grid">
+                <article class="stat-card">
+                  <div class="stat-icon mint-icon" aria-hidden="true">▦</div>
+                  <div>
+                    <p class="stat-label">Classes today</p>
+                    <p class="stat-value" id="classesTodayCount">0</p>
+                  </div>
+                  <span class="stat-decoration mint-decoration" aria-hidden="true">↗</span>
+                </article>
+                <article class="stat-card">
+                  <div class="stat-icon peach-icon" aria-hidden="true">☷</div>
+                  <div>
+                    <p class="stat-label">To-dos left</p>
+                    <p class="stat-value" id="tasksLeftCount">0</p>
+                  </div>
+                  <span class="stat-decoration peach-decoration" aria-hidden="true">✳</span>
+                </article>
+                <article class="stat-card">
+                  <div class="stat-icon lavender-icon" aria-hidden="true">✦</div>
+                  <div>
+                    <p class="stat-label">Upcoming exams</p>
+                    <p class="stat-value" id="upcomingExamsCount">0</p>
+                  </div>
+                  <span class="stat-decoration lavender-decoration" aria-hidden="true">↗</span>
+                </article>
+              </div>
+
+              <div class="dashboard-grid">
+                <section class="panel upcoming-panel">
+                  <div class="panel-heading">
+                    <div>
+                      <p class="eyebrow">STAY AHEAD</p>
+                      <h2>Coming up</h2>
+                    </div>
+                    <button class="text-button" type="button" data-view="assignments">See all <span aria-hidden="true">→</span></button>
+                  </div>
+                  <div id="upcomingList" class="upcoming-list"></div>
+                </section>
+
+                <section class="panel classes-panel">
+                  <div class="panel-heading">
+                    <div>
+                      <p class="eyebrow">YOUR SCHEDULE</p>
+                      <h2>Today's classes</h2>
+                    </div>
+                    <span class="today-chip" id="weekdayChip"></span>
+                  </div>
+                  <div id="todayClassesList" class="today-classes-list"></div>
+                </section>
+              </div>
+
+              <section class="panel progress-panel">
+                <div class="progress-copy">
+                  <div class="progress-icon" aria-hidden="true">✧</div>
+                  <div>
+                    <p class="eyebrow">KEEP IT GOING</p>
+                    <h2>Your progress, your pace.</h2>
+                    <p class="muted-copy">Every task you finish is a little more breathing room.</p>
+                  </div>
+                </div>
+                <div class="progress-meter-wrap">
+                  <div class="progress-meta"><span>Assignments completed</span><strong id="progressLabel">0%</strong></div>
+                  <div class="progress-track"><span id="progressBar"></span></div>
+                  <p class="progress-detail" id="progressDetail"></p>
+                </div>
+              </section>
+            </section>
+
+            <section id="manageView" class="view manage-view" hidden>
+              <div class="manage-header">
+                <div>
+                  <p class="eyebrow" id="manageEyebrow">YOUR WORKSPACE</p>
+                  <h1 id="manageTitle">My classes</h1>
+                  <p class="welcome-copy" id="manageDescription"></p>
+                </div>
+              </div>
+              <div class="list-toolbar">
+                <label class="search-box">
+                  <span aria-hidden="true">⌕</span>
+                  <input id="searchInput" type="search" placeholder="Search your planner" aria-label="Search your planner" />
+                </label>
+                <span class="result-count" id="resultCount"></span>
+              </div>
+              <div id="entriesList" class="entries-list"></div>
+            </section>
+          </div>
+
+          <aside class="quick-add-panel">
+            <div class="quick-add-heading">
+              <div>
+                <p class="eyebrow">MAKE IT HAPPEN</p>
+                <h2>Quick add</h2>
+              </div>
+              <span class="plus-mark" aria-hidden="true">+</span>
+            </div>
+            <p class="quick-add-copy">Add something to your planner and keep your week moving.</p>
+
+            <form id="entryForm">
+              <label class="field-label" for="entryType">What are you adding?</label>
+              <select id="entryType" name="type">
+                <option value="assignment">Assignment</option>
+                <option value="exam">Exam</option>
+                <option value="class">Class</option>
+              </select>
+
+              <label class="field-label" for="entryTitle">Name</label>
+              <input id="entryTitle" name="title" type="text" placeholder="e.g. Biology lab report" required maxlength="80" />
+
+              <label class="field-label" for="entryCourse">Course</label>
+              <input id="entryCourse" name="course" type="text" placeholder="e.g. Biology 101" maxlength="60" />
+
+              <div id="taskFields">
+                <label class="field-label" for="entryDueDate">Due date</label>
+                <input id="entryDueDate" name="dueDate" type="date" />
+              </div>
+
+              <div id="classFields" hidden>
+                <label class="field-label" for="entryDay">Day of the week</label>
+                <select id="entryDay" name="day">
+                  <option value="1">Monday</option>
+                  <option value="2">Tuesday</option>
+                  <option value="3">Wednesday</option>
+                  <option value="4">Thursday</option>
+                  <option value="5">Friday</option>
+                  <option value="6">Saturday</option>
+                  <option value="0">Sunday</option>
+                </select>
+                <div class="split-fields">
+                  <div>
+                    <label class="field-label" for="entryTime">Start time</label>
+                    <input id="entryTime" name="time" type="time" />
+                  </div>
+                  <div>
+                    <label class="field-label" for="entryLocation">Location</label>
+                    <input id="entryLocation" name="location" type="text" placeholder="Room" maxlength="50" />
+                  </div>
+                </div>
+              </div>
+
+              <button class="primary-button" type="submit"><span aria-hidden="true">+</span> Add to planner</button>
+            </form>
+
+            <div class="privacy-note"><span aria-hidden="true">⌑</span> Your entries stay in this browser.</div>
+          </aside>
+        </div>
+      </main>
+    </div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
